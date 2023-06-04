@@ -1,35 +1,36 @@
-# CS331 Sentiment Analysis Assignment 3
-# This file contains the processing functions
+import string
 
-
+# Converts text into a list of words
 def process_text(text):
-    """
-    Preprocesses the text: Remove apostrophes, punctuation marks, etc.
-    Returns a list of text
-    """
+    new_str = text.translate(str.maketrans('', '', string.punctuation))
+    preprocessed_text = new_str.lower().split()
 
     return preprocessed_text
 
-
+# Builds a list of words that are seen
 def build_vocab(preprocessed_text):
-    """
-    Builds the vocab from the preprocessed text
-    preprocessed_text: output from process_text
-    Returns unique text tokens
-    """
+    vocab = []
+
+    for word in preprocessed_text:
+        if word not in vocab and not any(char.isdigit() for char in word):
+            vocab.append(word)
+
+    vocab = sorted(vocab)
+    vocab.append('classlabel')
 
     return vocab
 
-
+# Converts a line of text into a vector and label
 def vectorize_text(text, vocab):
-    """
-    Converts the text into vectors
-    text: preprocess_text from process_text
-    vocab: vocab from build_vocab
-    Returns the vectorized text and the labels
-    """
+    vectorized_text = []
+    for word in vocab:
+        if word in text:
+            vectorized_text.append(1)
+        else: vectorized_text.append(0)
 
-    return vectorized_text, labels
+    label = text[-1]
+
+    return vectorized_text, label
 
 
 def accuracy(predicted_labels, true_labels):
@@ -41,9 +42,40 @@ def accuracy(predicted_labels, true_labels):
 
     return accuracy_score
 
+def readfile(file_name):
+    with open(file_name, 'r') as file:
+        return file.read()
+
+def createprocessedfile(data, file_name):
+    processed_data = process_text(data)
+    vocab = build_vocab(processed_data)
+
+    with open(file_name, 'w') as file:
+        # Write top line
+        for item in vocab:
+            file.write("%s," % item)
+
+        file.write('\n')
+
+        # Write each vector to file
+        for line in data.split('\n'):
+            processed_line = process_text(line)
+
+            if len(processed_line) > 0:
+                (vector, label) = vectorize_text(processed_line, vocab)
+            
+                for item in vector:
+                    file.write("%s," % item)
+
+            file.write("%s\n" % label)
 
 def main():
     # Take in text files and outputs sentiment scores
+    test_data = readfile('testSet.txt')
+    training_data = readfile('trainingSet.txt')
+
+    createprocessedfile(test_data, 'preprocessed_train.txt')
+    createprocessedfile(training_data, 'preprocessed_test.txt')
 
     return 1
 
