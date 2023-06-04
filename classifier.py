@@ -1,6 +1,3 @@
-# This file implements a Naive Bayes Classifier
-
-
 class BayesClassifier():
     """
     Naive Bayes Classifier
@@ -23,6 +20,17 @@ class BayesClassifier():
         train_labels: vectorized labels
         vocab: vocab from build_vocab
         """
+
+        for word in vocab:
+            self.positive_word_counts[word] = 1
+            self.negative_word_counts[word] = 1
+
+            for i, vector in enumerate(train_data):
+                if train_labels[i] == 1 and word in vector:
+                    self.positive_word_counts[word] += 1
+                elif word in vector:
+                    self.negative_word_counts[word] += 1
+
         return 1
 
 
