@@ -26,8 +26,8 @@ def vectorize_text(text, vocab):
     vectorized_text = []
     for word in vocab:
         if word in text:
-            vectorized_text.append(1)
-        else: vectorized_text.append(0)
+            vectorized_text.append('1')
+        else: vectorized_text.append('0')
 
     label = text[-1]
 
@@ -80,7 +80,7 @@ def accuracy(predicted_labels, true_labels):
             accuracy_score += 1
 
     accuracy_score /= len(predicted_labels)
-    return accuracy_score
+    return accuracy_score*100
 
 def main():
     # Take in text files and outputs sentiment scores
@@ -98,7 +98,7 @@ def main():
 
     classifier = BayesClassifier()
 
-    classifier.train(training_data, training_labels, training_vocab)
+    classifier.train(training_vectors, training_labels, training_vocab)
     predictions = classifier.classify_text(training_vectors, training_vocab)
 
     print(accuracy(predictions, training_labels))

@@ -27,23 +27,23 @@ class BayesClassifier():
 
         # Calculate percentage possibility of positive or negative
         for label in train_labels:
-            if label == 1:
+            if label == '1':
                 self.number_positive_sentences += 1
             else:
                 self.number_negative_sentences += 1
 
-        self.percent_positive_sentences = self.number_positive_sentences / len(train_labels)
-        self.percent_negative_sentences = self.number_negative_sentences / len(train_labels)
+        self.percent_positive_sentences = (self.number_positive_sentences / len(train_labels))
+        self.percent_negative_sentences = (self.number_negative_sentences / len(train_labels))
 
         # Calculate amount for each word
-        for word in vocab:
+        for i, word in enumerate(vocab):
             self.positive_word_counts[word] = 1
             self.negative_word_counts[word] = 1
 
             for vector, label in zip(train_vectors, train_labels):
-                if label == 1 and word in vector:
+                if label == '1' and vector[i] == '1':
                     self.positive_word_counts[word] += 1
-                elif word in vector:
+                elif vector[i] == '1':
                     self.negative_word_counts[word] += 1
 
         return 1
@@ -57,21 +57,20 @@ class BayesClassifier():
 
         predictions = []
 
+        percent_pos = math.log(self.percent_positive_sentences)
+        percent_neg = math.log(self.percent_negative_sentences)
+
         for vector in vectors:
-            percent_pos = math.log(self.percent_positive_sentences)
-            percent_neg = math.log(self.percent_negative_sentences)
-
-            for word in vector:
-                if word not in vocab:
-                    continue
-                
-                percent_pos += math.log(self.postive_word_counts[word] / (self.number_positive_sentences + len(vector)))
-                percent_neg += math.log(self.negative_word_counts[word] / (self.number_negative_sentences + len(vector)))
-
-                if percent_pos > percent_neg:
-                    predictions.append(1)
+            for seen, word in zip(vector, vocab):
+                if (seen == '1'):
+                    percent_pos += math.log((self.positive_word_counts[word]) / (self.number_positive_sentences+len(vocab)))
                 else:
-                    predictions.append(0)
+                    percent_neg += math.log((self.negative_word_counts[word]) / (self.number_negative_sentences+len(vocab)))
+
+            if percent_pos > percent_neg:
+                predictions.append('1')
+            else:
+                predictions.append('0')
 
         return predictions
     
