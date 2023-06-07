@@ -99,7 +99,7 @@ def main():
     classifier = BayesClassifier()
 
     classifier.train(training_vectors, training_labels, training_vocab)
-    predictions = classifier.classify_text(training_vectors, training_vocab)
+    predictions = classifier.classify_text(test_vectors, training_vocab)
 
     print(accuracy(predictions, training_labels))
 
