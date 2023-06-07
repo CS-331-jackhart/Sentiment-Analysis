@@ -66,8 +66,8 @@ class BayesClassifier():
         predictions = []
 
         for vector in vectors:
-            percent_pos = math.log(self.percent_positive_sentences)
-            percent_neg = math.log(self.percent_negative_sentences)
+            percent_pos = math.log(max(self.percent_positive_sentences, 1))
+            percent_neg = math.log(max(self.percent_negative_sentences, 1))
 
             for seen, word in zip(vector, vocab):
                 if word in self.positive_word_counts and word in self.negative_word_counts:

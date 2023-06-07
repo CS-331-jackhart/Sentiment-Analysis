@@ -17,7 +17,6 @@ def build_vocab(preprocessed_text):
             vocab.append(word)
 
     vocab = sorted(vocab)
-    vocab.append('classlabel')
 
     return vocab
 
@@ -103,6 +102,12 @@ def main():
         predictions = classifier.classify_text(training_vectors, training_vocab)
 
         print(accuracy(predictions, training_labels))
+
+    # classifier.train(training_vectors, training_labels, training_vocab, 3)
+    # predictions = classifier.classify_text(training_vectors, training_vocab)
+
+    # print(accuracy(predictions, training_labels))
+
 
     return 1
 
