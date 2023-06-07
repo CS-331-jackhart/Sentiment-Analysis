@@ -93,15 +93,16 @@ def main():
     (training_vectors, training_labels) = data_to_vectors(training_data, training_vocab)
     (test_vectors, test_labels) = data_to_vectors(test_data, test_vocab)
 
-    createprocessedfile(test_vectors, test_labels, test_vocab, 'preprocessed_train.txt')
-    createprocessedfile(training_vectors, training_labels, training_vocab, 'preprocessed_test.txt')
+    createprocessedfile(test_vectors, test_labels, test_vocab, 'preprocessed_test.txt')
+    createprocessedfile(training_vectors, training_labels, training_vocab, 'preprocessed_train.txt')
 
     classifier = BayesClassifier()
 
-    classifier.train(training_vectors, training_labels, training_vocab)
-    predictions = classifier.classify_text(test_vectors, training_vocab)
+    for i in range(4):
+        classifier.train(training_vectors, training_labels, training_vocab, i)
+        predictions = classifier.classify_text(training_vectors, training_vocab)
 
-    print(accuracy(predictions, training_labels))
+        print(accuracy(predictions, training_labels))
 
     return 1
 
