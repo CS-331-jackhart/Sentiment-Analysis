@@ -103,10 +103,10 @@ def main():
 
         print(accuracy(predictions, training_labels))
 
-    # classifier.train(training_vectors, training_labels, training_vocab, 3)
-    # predictions = classifier.classify_text(training_vectors, training_vocab)
+    classifier.train(training_vectors, training_labels, training_vocab, 3)
+    predictions = classifier.classify_text(training_vectors, training_vocab)
 
-    # print(accuracy(predictions, training_labels))
+    print(accuracy(predictions, training_labels))
 
 
     return 1

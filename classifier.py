@@ -31,7 +31,11 @@ class BayesClassifier():
         vectors = train_vectors[:end_idx] if stage <= 0 else train_vectors[self.file_sections[stage-1]:end_idx]
         labels = train_labels[:end_idx] if stage <= 0 else train_labels[self.file_sections[stage-1]:end_idx]
 
+        vectors = train_vectors
+        labels = train_labels
+
         train_length = len(vectors)
+        print(train_length)
 
         # Calculate percentage possibility of positive or negative
         for label in labels:
@@ -73,7 +77,6 @@ class BayesClassifier():
                 if word in self.positive_word_counts and word in self.negative_word_counts:
                     if (seen == '1'):
                         percent_pos += math.log((self.positive_word_counts[word]+1) / (self.number_positive_sentences+2))
-                    else:
                         percent_neg += math.log((self.negative_word_counts[word]+1) / (self.number_negative_sentences+2))
 
             if percent_pos > percent_neg:
