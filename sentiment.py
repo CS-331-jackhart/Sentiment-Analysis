@@ -97,17 +97,23 @@ def main():
 
     classifier = BayesClassifier()
 
-    for i in range(4):
-        classifier.train(training_vectors, training_labels, training_vocab, i)
-        predictions = classifier.classify_text(training_vectors, training_vocab)
+    percent_data_trained = 0
+    with open('results.txt', 'w') as results:
+        results.write("Percent Data Trained;Training data classification accuracy;Test data classification accuracy\n")
 
-        print(accuracy(predictions, training_labels))
+        for i in range(4):
+            percent_data_trained = round((classifier.file_sections[i] / classifier.file_length) * 100, 2)
+            classifier.train(training_vectors, training_labels, training_vocab, i)
 
-    classifier.train(training_vectors, training_labels, training_vocab, 3)
-    predictions = classifier.classify_text(training_vectors, training_vocab)
+            # Test on training set
+            predictions = classifier.classify_text(training_vectors, training_vocab)
+            _accuracy = round(accuracy(predictions, training_labels), 2)
 
-    print(accuracy(predictions, training_labels))
+            # Test on test set
+            predictions = classifier.classify_text(test_vectors, test_vocab)
+            _test_accuracy = round(accuracy(predictions, test_labels), 2)
 
+            results.write(f"{percent_data_trained};{_accuracy};{_test_accuracy}\n")
 
     return 1
 
