@@ -1,5 +1,5 @@
 Percent Data Trained;Training data classification accuracy;Test data classification accuracy
 24.85;59.12;59.36
-33.27;65.93;62.37
-49.9;76.75;68.81
+49.7;77.15;68.61
+74.55;83.57;73.24
 100.0;93.99;77.26
